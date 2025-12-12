@@ -12,18 +12,18 @@ This project implements an **end-to-end AI pipeline** designed to streamline thi
 ---
 
 ## Key Impact
-* [cite_start]**Efficiency:** Reduced the matching timeline from **3 weeks to <1 day**[cite: 1185].
-* [cite_start]**Cost Optimization:** Implemented a multi-stage filtering architecture that reduced API costs by **~96%** (from ~$900 to ~$30 per run) by filtering candidates before expensive alignment scoring[cite: 1117, 1119].
-* [cite_start]**Scale:** Capable of processing **40,000+ initial combinations** and narrowing them down to precise top-4 candidates per company[cite: 821, 1138].
-* [cite_start]**Quality:** In manual audits of the 2024 cohort, **94%** of top-ranked candidates were verified as qualified matches[cite: 1187].
+* **Efficiency:** Reduced the matching timeline from **3 weeks to <1 day**.
+* **Cost Optimization:** Implemented a multi-stage filtering architecture that reduced API costs by **~96%** (from ~$900 to ~$30 per run) by filtering candidates before expensive alignment scoring.
+* **Scale:** Capable of processing **40,000+ initial combinations** and narrowing them down to precise top-4 candidates per company.
+* **Quality:** In manual audits of the 2024 cohort, **94%** of top-ranked candidates were verified as qualified matches.
 
 ---
 
 ## The Problem
 The previous matching system relied on a combination of rigid form-based filtering and extensive manual review.
-* [cite_start]**Bottleneck:** A team of three required up to **3 weeks** to match just 100 companies[cite: 733].
-* [cite_start]**Fragility:** Automated systems often failed to find matches for niche roles, forcing manual searches[cite: 744].
-* [cite_start]**Inequity:** "First-come-first-served" matching logic often led to optimal candidates being unavailable for later companies[cite: 770].
+* **Bottleneck:** A team of three required up to **3 weeks** to match just 100 companies.
+* **Fragility:** Automated systems often failed to find matches for niche roles, forcing manual searches.
+* **Inequity:** "First-come-first-served" matching logic often led to optimal candidates being unavailable for later companies.
 
 ---
 
@@ -33,20 +33,20 @@ The solution is a 6-stage pipeline that progressively refines the candidate pool
 ### Pipeline Workflow
 
 **1. Data Ingestion & Cross-Join** (`pipeline_1_logic_scoring.ipynb`)
-* [cite_start]Combines all student applications with all position profiles to create a comprehensive dataset of every possible pair[cite: 791].
-* [cite_start]**Ineligibility Filtering:** Hard filters for age, location, and graduation year remove impossible matches immediately[cite: 794].
+* Combines all student applications with all position profiles to create a comprehensive dataset of every possible pair.
+* **Ineligibility Filtering:** Hard filters for age, location, and graduation year remove impossible matches immediately.
 
 **2. Semantic Extraction (The "Extract-o-Bot")** (`pipeline_2_extract-o-bot.ipynb`)
 * Uses **GPT-4** to analyze unstructured resumes and job descriptions.
-* [cite_start]**Extracts & Labels:** Identifies Technical Skills, Soft Skills, and Industry Interests, labeling them by proficiency (Beginner/Advanced) and relevance[cite: 829, 856].
+* **Extracts & Labels:** Identifies Technical Skills, Soft Skills, and Industry Interests, labeling them by proficiency (Beginner/Advanced) and relevance.
 
 **3. Keyword Scoring** (`pipeline_3_keyword_scoring.ipynb`)
 * Applies a weighted scoring algorithm to the extracted data.
-* [cite_start]**Weights:** Heavy emphasis on Technical Skills and Industry Alignment, with secondary weighting for Soft Skills and Values[cite: 920, 958].
+* **Weights:** Heavy emphasis on Technical Skills and Industry Alignment, with secondary weighting for Soft Skills and Values.
 
 **4. Keyword Filtering** (`pipeline_4_keyword_filtering.ipynb`)
 * **The Cost Saver:** Filters out low-probability matches *before* the expensive alignment step.
-* [cite_start]In the 2024 cohort, this step reduced the pool from **27,700** candidates to **993** high-potential pairs, massively reducing downstream API costs[cite: 1017].
+* In the 2024 cohort, this step reduced the pool from **27,700** candidates to **993** high-potential pairs, massively reducing downstream API costs.
 
 **5. Alignment Scoring ("Matchy-9000")** (`pipeline_5_matchy-9000.ipynb`)
 * Performs a deep-dive semantic comparison of the remaining pairs.
@@ -54,11 +54,11 @@ The solution is a 6-stage pipeline that progressively refines the candidate pool
     1.  Company Mission & Industry Fit
     2.  Role Responsibilities vs. Experience
     3.  Technical Stack Alignment
-    4.  [cite_start]Culture & Values Fit[cite: 1069].
-* [cite_start]Generates a nuanced 0-10 score with reasoning summaries[cite: 1092].
+    4.  Culture & Values Fit.
+* Generates a nuanced 0-10 score with reasoning summaries.
 
 **6. Final Selection** (`pipeline_6_matchy_filtering.ipynb`)
-* [cite_start]Selects the top 4 candidates for each company using an iterative round-robin selection to ensure equitable distribution of talent[cite: 1138].
+* Selects the top 4 candidates for each company using an iterative round-robin selection to ensure equitable distribution of talent.
 
 ---
 
@@ -66,13 +66,13 @@ The solution is a 6-stage pipeline that progressively refines the candidate pool
 
 ### Rate Limiting & Concurrency
 To handle thousands of API calls efficiently without hitting provider limits:
-* [cite_start]**Semaphores:** Used to strictly control concurrent requests and token throughput[cite: 1431].
-* [cite_start]**Threading:** Multi-threaded execution ensures high throughput (up to 150 rows/minute)[cite: 1442].
-* [cite_start]**Retry Logic:** Robust backoff mechanisms handle transient API failures gracefully[cite: 1438].
+* **Semaphores:** Used to strictly control concurrent requests and token throughput.
+* **Threading:** Multi-threaded execution ensures high throughput (up to 150 rows/minute).
+* **Retry Logic:** Robust backoff mechanisms handle transient API failures gracefully.
 
 ### Data Security
-* [cite_start]**Thread Isolation:** API calls are isolated on separate threads to prevent prompt injection attacks or data cross-contamination[cite: 1329].
-* [cite_start]**Input Sanitization:** All inputs are validated to prevent malicious prompt engineering within job descriptions[cite: 1337].
+* **Thread Isolation:** API calls are isolated on separate threads to prevent prompt injection attacks or data cross-contamination.
+* **Input Sanitization:** All inputs are validated to prevent malicious prompt engineering within job descriptions.
 
 ---
 
