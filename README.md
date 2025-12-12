@@ -27,7 +27,7 @@ The previous matching system relied on a combination of rigid form-based filteri
 
 ---
 
-## 🛠️ The Solution: Architecture & Pipeline
+## The Solution: Architecture & Pipeline
 The solution is a 6-stage pipeline that progressively refines the candidate pool using both symbolic logic (filters) and semantic understanding (LLMs).
 
 ### Pipeline Workflow
@@ -91,7 +91,7 @@ To handle thousands of API calls efficiently without hitting provider limits:
 
 ---
 
-## ⚡ Getting Started
+## Getting Started
 
 ### Prerequisites
 * Python 3.11+
